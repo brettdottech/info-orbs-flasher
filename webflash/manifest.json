@@ -10,12 +10,6 @@
           { "path": "SerialHelloWorld.ino.bootloader.bin", "offset": 4096 },
           { "path": "SerialHelloWorld.ino.partitions.bin", "offset": 32768 }
         ]
-      },
-      {
-        "chipFamily": "ESP8266",
-        "parts": [
-          { "path": "esp8266/SerialHelloWorld.ino.bin", "offset": 0 }
-        ]
       }
     ]
   }
