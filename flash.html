@@ -3,7 +3,8 @@
 
 
 <body>
-    <h1>Sample project for demoing ESP Web Tools</h1>
+    <h1>Info Orbs Web Flasher Alpha v0.1</h1>
+    <h1>This will flash your device with a pre-compiled version of the info orbs firmware, to be configured using the wifimanager web portal, which you can access by going to the orbs IP address displayed on screen during boot</h1>
 
     <div id="main" style="display: none;">
 
@@ -14,6 +15,8 @@
         </script>
         <esp-web-install-button id="installButton" manifest="webflash/manifest.json"></esp-web-install-button>
         <br>
+        <span>Simply Plug in your device, select the port at the top left of your browser (only chrome and edge currently supported), the click flash!</span>
+        <span>You will likely need to hold the BOOT button to begin flashing, once its began flashing you may release it</span>
         <span>NOTE: Make sure to close anything using your devices com port (e.g. Serial monitor)</span>
     </div>
     <div id="notSupported" style="display: none;">
