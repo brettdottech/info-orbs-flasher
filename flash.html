@@ -1,39 +1,203 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 95 Config Tool</title>
+    <style>
+        body {
+            font-family: 'MS Sans Serif', Arial, sans-serif;
+            background: #008080 url('https://upload.wikimedia.org/wikipedia/commons/a/a3/Windows_95_default_desktop_background.svg') center center fixed;
+            background-size: cover;
+            color: black;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
 
+        .logo {
+            width: 100px;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
 
+        .window {
+            background: silver;
+            border: 2px solid black;
+            width: 600px;
+            height: 400px;
+            box-shadow: 6px 6px #808080;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: default;
+        }
+
+        .title-bar {
+            background: navy;
+            color: white;
+            padding: 5px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid black;
+            cursor: grab;
+        }
+
+        .title-bar .title {
+            margin: 0;
+            padding-left: 5px;
+        }
+
+        .title-bar button {
+            background: silver;
+            border: 1px solid black;
+            width: 18px;
+            height: 18px;
+            font-size: 14px;
+            color: black;
+            text-align: center;
+            line-height: 14px;
+            cursor: pointer;
+        }
+
+        .title-bar button:hover {
+            background: red;
+            color: white;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer {
+            font-size: 12px;
+            text-align: center;
+            color: black;
+            border-top: 2px solid gray;
+            padding: 5px;
+        }
+
+        /* Clippy Styles */
+        .clippy {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: flex-start;
+            z-index: 10;
+        }
+
+        .clippy img {
+            width: 100px;
+            height: auto;
+        }
+
+        .clippy .speech-bubble {
+            background: white;
+            border: 2px solid black;
+            padding: 10px;
+            border-radius: 5px;
+            margin-right: 10px;
+            box-shadow: 4px 4px #808080;
+            font-size: 14px;
+            color: black;
+        }
+    </style>
+</head>
 <body>
-    <h1>Info Orbs Web Flasher Alpha v0.1</h1>
-    <h1>This will flash your device with a pre-compiled version of the info orbs firmware, to be configured using the wifimanager web portal, which you can access by going to the orbs IP address displayed on screen during boot</h1>
+    <img src="text-1707155806168.webp" alt="Logo" class="logo">
 
-    <div id="main" style="display: none;">
+    <div class="window" id="toolWindow">
+        <div class="title-bar" id="titleBar">
+            <span class="title">info orbs web flasher</span>
+            <button onclick="closeWindow()">x</button>
+        </div>
+        <div class="content">
+            <p>This webpage will allow you to flash your orbs with the latest firmware.</p>
+            <p>Simply click the below button, select your device (only Chrome & Edge supported), and then click flash!</p>
+            <div id="main" style="display: none;">
+                <script
+                    type="module"
+                    src="https://unpkg.com/esp-web-tools@7.3.1/dist/web/install-button.js?module">
+                </script>
+                <esp-web-install-button id="installButton" manifest="webflash/manifest.json"></esp-web-install-button>
+                <p>Hold the BOOT button if needed to start flashing.</p>
+            </div>
+            <div id="notSupported" style="display: none;">
+                <p>Your browser does not support the Web Serial API. Please use Chrome or Edge.</p>
+            </div>
+        </div>
+        <div class="footer">
+            © 1995 info orbs.
+        </div>
+    </div>
 
-        <br>
-        <script
-            type="module"
-            src="https://unpkg.com/esp-web-tools@7.3.1/dist/web/install-button.js?module">
-        </script>
-        <esp-web-install-button id="installButton" manifest="webflash/manifest.json"></esp-web-install-button>
-        <br>
-        <span>Simply Plug in your device, select the port at the top left of your browser (only chrome and edge currently supported), the click flash!</span>
-        <span>You will likely need to hold the BOOT button to begin flashing, once its began flashing you may release it</span>
-        <span>NOTE: Make sure to close anything using your devices com port (e.g. Serial monitor)</span>
+    <!-- Clippy -->
+    <div class="clippy">
+        <div class="speech-bubble">
+            If you hold the right button on your orbs on boot, it will reset your WiFi credentials.
+        </div>
+        <img src="clippy.png" alt="Clippy">
     </div>
-    <div id="notSupported" style="display: none;">
-        Your browser does not support the Web Serial API. Try Chrome
-    </div>
-    
 
     <script>
-        if(navigator.serial){
+        if (navigator.serial) {
             document.getElementById("notSupported").style.display = 'none';
             document.getElementById("main").style.display = 'block';
         } else {
             document.getElementById("notSupported").style.display = 'block';
             document.getElementById("main").style.display = 'none';
         }
+
+        // Modify the button inside the shadow DOM
+        const styleConnectButton = () => {
+            const installButton = document.querySelector("esp-web-install-button");
+            if (installButton && installButton.shadowRoot) {
+                const button = installButton.shadowRoot.querySelector("button");
+                if (button) {
+                    button.style.background = "linear-gradient(to bottom, #C0C0C0, #A9A9A9)";
+                    button.style.border = "2px solid black";
+                    button.style.padding = "10px 20px";
+                    button.style.color = "black";
+                    button.style.fontFamily = "'MS Sans Serif', Arial, sans-serif";
+                    button.style.fontSize = "16px";
+                    button.style.cursor = "pointer";
+                    button.style.boxShadow = "4px 4px #808080";
+                    button.style.textTransform = "uppercase";
+
+                    button.addEventListener("mouseover", () => {
+                        button.style.background = "linear-gradient(to bottom, #A9A9A9, #808080)";
+                    });
+                    button.addEventListener("mousedown", () => {
+                        button.style.background = "#606060";
+                    });
+                    button.addEventListener("mouseup", () => {
+                        button.style.background = "linear-gradient(to bottom, #C0C0C0, #A9A9A9)";
+                    });
+                }
+            }
+        };
+
+        // Observe when the component is loaded
+        const observer = new MutationObserver(() => {
+            styleConnectButton();
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        function closeWindow() {
+            const toolWindow = document.getElementById("toolWindow");
+            toolWindow.style.display = "none";
+        }
     </script>
-
 </body>
-
 </html>
