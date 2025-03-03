@@ -1,5 +1,5 @@
 {
-  "name": "InfoOrbs Flasher",
+  "name": "InfoOrbs by brett.tech",
   "new_install_prompt_erase": true,
   "version": "1.2beta",
   "builds": [
@@ -26,4 +26,3 @@
     }
   ]
 }
-
